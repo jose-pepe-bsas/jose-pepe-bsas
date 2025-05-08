@@ -1,0 +1,698 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.4">
+    
+    
+      
+        <title>Slopsquatting, how the speed of AI-based development exploits an old attack vector, and how we could prevent it. - Jose Pepe Space</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#slopsquatting-how-the-speed-of-ai-based-development-exploits-an-old-attack-vector-and-how-we-could-prevent-it" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Jose Pepe Space" class="md-header__button md-logo" aria-label="Jose Pepe Space" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Jose Pepe Space
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Slopsquatting, how the speed of AI-based development exploits an old attack vector, and how we could prevent it.
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Jose Pepe Space" class="md-nav__button md-logo" aria-label="Jose Pepe Space" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Jose Pepe Space
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning_roadmap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Learning Roadmap
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../opensource_contribution/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenSource
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cv_en/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CV
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Goal
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources-and-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sources and Notes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-read" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to read
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. The problem
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-does-it-affect-you-as-a-developer-or-businessman" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why does it affect you as a developer or businessman?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How it works?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-does-it-look-from-the-attackers-point-of-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      How does it look from the attacker's point of view?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llms-and-hallucinations" class="md-nav__link">
+    <span class="md-ellipsis">
+      LLMs and hallucinations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#which-cant-be-done-as-a-diagnosis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Which can't be done as a diagnosis?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#which-can-be-done-as-prevention" class="md-nav__link">
+    <span class="md-ellipsis">
+      Which can be done as prevention?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-my-proposal-which-can-be-done-as-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. My proposal: Which can be done as mitigation?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. My proposal: Which can be done as mitigation?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#proposal-explanation-on-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proposal Explanation on Node
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Proposal Explanation on Node">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mechanisms-by-which-malicious-packages-could-execute-in-a-development-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      The mechanisms by which malicious packages could execute in a development environment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-current-package-management-security-controls-that-might-already-mitigate-these-risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      The current package management security controls that might already mitigate these risks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-proposed-mitigation-solution-just-thinking-on-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      The proposed mitigation solution, just thinking on it!
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-workflow-impact-of-the-proposed-mitigation-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      The workflow impact of the proposed mitigation solution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ending-ideas-on-proposal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ending ideas on proposal
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contact" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contact
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="slopsquatting-how-the-speed-of-ai-based-development-exploits-an-old-attack-vector-and-how-we-could-prevent-it">Slopsquatting, how the speed of AI-based development exploits an old attack vector, and how we could prevent it.</h1>
+<h2 id="goal">Goal</h2>
+<p>To propose and implement a tool usable by developers during artificial intelligence-assisted programming to prevent slopsquatting vulnerabilities.</p>
+<h2 id="sources-and-notes">Sources and Notes</h2>
+<p>Here we're diving into a well known AI trouble: <strong>model hallucination</strong> and how it's affecting the AI-assisted software development. For this purpose, I'll be supporting this article in a research paper published on March 2, 2025 by USENIX entitled "We Have a Package for You! A Comprehensive Analysis of Package Hallucinations by Code Generating LLMs"</p>
+<p>" On "Slopsquatting" term: this is a pretty new and colloquial term invented by the low-code development community, there is no "slopsquatting" references into Usenix's study.
+This article is my own elaboration, as Jose Pepe I have no relationship with Usenix and I am just a user of some of the tools I mention here.</p>
+<h2 id="how-to-read">How to read</h2>
+<p>The objective of this proposal is to understand how to use AI for software development in high-speed delivery cycles while mitigating one of its most important risks.
+You won't know if this tool is useful to you until you understand the problem we face as AI-assisted developers, so the order of reading will be as follows: first (1) I will explain and evaluate the problem based on the study published on March 2, 2025 by USENIX entitled "We Have a Package for You! A Comprehensive Analysis of Package Hallucinations by Code Generating LLMs", and then (2) I will present and explain the tool I developed as a potential preventive aid.</p>
+<h2 id="1-the-problem">1. The problem</h2>
+<h3 id="why-does-it-affect-you-as-a-developer-or-businessman">Why does it affect you as a developer or businessman?</h3>
+<p>Attention and prevention of "slopsquatting" is a <strong>main concern</strong> for the use of LLMs in programming tasks because almost one fifth of the generated packets are hallucinations and probable attack vectors. Consider that: about 97% of programmers use AI for programming tasks today, and approximately 30% of the code that is written every day is Artificial Intelligence-generated.</p>
+<p>Due to the high speed of delivery demanded in certain market areas, AI tools are increasingly relied upon to generate code. If the risks are not known then the damage it can cause is incalculable: for a developer it can mean being responsible for having generated a backdoor into the organization where he's working, and for a company it can mean the breach of their systems and loss of trust by the market. Trust without understanding can even mean that the speed of development plummets due to more time and personnel dedicated to auditing and maintaining AI-generated code.</p>
+<p>One of these issues called "model hallucination" derivates in a security threat that has been named "Slopsquatting" by some forums of the online dev-community and technology company newsrooms, and is affecting one in five packets written in code generated by open-source LLM. Using Usenix's study words: "at least 5.2% for commercial models and 21.7% for open-source models".</p>
+<h3 id="how-it-works">How it works?</h3>
+<p>In simple terms, slopsquatting consist on the LLM generating a code using a named external package, and this external package in reality either does not exist or is fraudulent, so the incorporation of the obtained code will generate either a broken installation of the working project, or the installation of malicious code in the development environment and potentially in the project's file repository.</p>
+<p>The problem is observed when instructing an LLM to perform a programming task that is likely to require the use of an external module (like a project dependency), and especially when using a language whose package management is done through a centralized repository. For this article we take the case of Javascript and its package manager NPM.</p>
+<p>In which LLMs does this happen? The percentage of package hallucination is lower in commercial extended language models, while it is higher in open source ones.</p>
+<p>In which kind of packages does this happen? Slopsquatting requires that an LLM be widely used by communities of developers (ie ChatGPT) and also that the package name to be used is a common result of the hallucination of that LLM in particular.</p>
+<p>Slopsquatting is an infection technique within the “packet confusion attacks” that consists of distributing malicious code using package names resulting from the hallucination of an LLM. It should be clarified that by confusion I'm not only referring to confusion on the part of the programmer; while the programmer may be confused, a malicious actor will directly attempt to confuse the package manager's dependency conflict resolver, and may not only succeed in installing the malicious package based on human confusion, but by forcing it.</p>
+<p>It should also be noted that the injection of this type of package can occur anywhere in the dependency tree, it is a difficult problem to control, and for a developer it can be impossible depending on the project he is working on.</p>
+<h3 id="how-does-it-look-from-the-attackers-point-of-view">How does it look from the attacker's point of view?</h3>
+<p>The source article concludes that packet hallucination is a repeatable result. This means that an attacker can rely on the probability of repetition of a number of hallucinated packet names as an entry point to an attack.</p>
+<p>In addition, for each LLM there is a likely set of hallucinated package names, while it is unlikely that two or more LLMs will match on a hallucination of package names.</p>
+<p>Also, it is more likely that packet hallucination will generate packet names more different from those that exist (instead of using a name like “goolge” to brand-hack a google package, they would use a rather different word.) so an attacker should look for repeatability within an LLM to obtain a likely attack vector rather than trying typos.</p>
+<p>It is intuitive to think that an attacker would try to get, for each massively used LLM, the set of names of hallucinated packages, and then start publishing using multiple accesses to centralized repositories (such as npm) packages with code that could, for example if it is a networked device, query DNS to a domain under its control, whose requests may leak basic information such as the computer name, the path in the file system....</p>
+<h3 id="llms-and-hallucinations">LLMs and hallucinations</h3>
+<p>What is a hallucination and why is it caused? In terms of LLMs, hallucination consists of returning a result that does not correspond to the instruction given by the user of the model. The hallucination can be due to problems with the training data, problems with the training procedures, or problems during inference. The hallucination that gives rise to Slopsquatting is the "package hallucination", which is a type of "fact hallucination".</p>
+<p>Hallucination during inference is related to verbosity and model temperature, both of which make the model more prone to hallucination.</p>
+<p>Hallucination is a type of behavior of an LLM in the inference phase that also involves other associated behaviors, e.g. a certain amount of verbosity, certain grammar, etc.</p>
+<p>About the study that supports this article, as well as the other cited studies on AI applied to software development are done using datasets of development tasks including public and massive sources such as stack overflow.</p>
+<h3 id="which-cant-be-done-as-a-diagnosis">Which can't be done as a diagnosis?</h3>
+<p>The comparison between known package names and the names generated by an LLM is not a solution, because a malicious user may have published a malicious package before this comparison is made. An attacker can even pretend that his malicious package is being downloaded and incorporated into the dependency chain of the node repository
+Filtering the LLM output based on reserved import words in languages (such as require) is not useful for getting malicious module injections because, from the filtering, we will get packages and not modules which are the ones containing the payload of the attack.</p>
+<h3 id="which-can-be-done-as-prevention">Which can be done as prevention?</h3>
+<p>As a Client after prompting, we will first need to know the current state of the LLMs we use as tools for programming. 
+For example, we will need to know data such as Codellama 7B is the model most prone to packet hallucinations, and javascript is more prone to packet hallucination than python.
+Also that a model is highly likely to detect its own packet hallucinations and self-correct, even if we do not ask it to do so. It is a good idea to ask for the resolution of a problem in code and then check the central repository database, and ask the model for a correction if necessary, even asking to use specific packages.
+A 'curious' thing on Javascript and Python, is that when an llms is given a javascript programming task and it hallucinates, it is likely to return code using a package that does not belong to npm but to python PyPI (mainly) or another language's package manager.</p>
+<h2 id="2-my-proposal-which-can-be-done-as-mitigation">2. My proposal: Which can be done as mitigation?</h2>
+<p>There are things that are possible for both an LLM client and a supplier. I'm focusing on the client, as that is my current role in using AI for work.</p>
+<p>Here in mitigation, as in prevention, is the pre-generation code defense, and post generation.</p>
+<p>The pre-generation slopsquatting defense, as LLM clients, will focus on the prompt we provide as input; here, the article clarifies that RAG is the client-oriented technique which provides the best results on mitigation. Also points on that Packet hallucination mitigation strategies affect the quality of the code generated by the LLMs.</p>
+<p><strong>My proposal</strong> focuses on post-generation mitigation, as I assume that AI will continue to be used for code generation while LLM providers try to improve hallucination statistics, so we have to find how to maintain productivity while ensuring safety.</p>
+<p>And, in post generation, my proposal has two steps:</p>
+<ol>
+<li>firstly to identify suspicious package traits</li>
+<li>then to force the programmer to recognize and validate such a package, before it is installed in the development environment and potentially incorporated into the project repository.</li>
+</ol>
+<p>There are scripts and hooks that call the packages at the very moment when the installation is finished, that is the risk that I try to avoid with the proposal.
+Reliability is returned to the programmer in a way that maintains productivity; AI is still used for code generation while its development environment forces the programmer to take responsibility for his product.</p>
+<h3 id="proposal-explanation-on-node">Proposal Explanation on Node</h3>
+<h4 id="the-mechanisms-by-which-malicious-packages-could-execute-in-a-development-environment">The mechanisms by which malicious packages could execute in a development environment</h4>
+<p>First let's do a brief overview of how npm works in the contexts of downloading and installing packages, and executing commands.</p>
+<p>NPM is composed by a centralized repository, whose url is https://registry.npmjs.org/, plus a version control system for dependencies consistency and a CLI client.</p>
+<p>When working with external packages, cli client will search online that package across several web protocols such as git, http, etc and, once it's found, it gets downloaded and then installed. When working with packages into working directory, then npm will install it directly from the named file or flder. If you don't pass any parameter to ´npm install´ then it's gonna search in the current working directory for a file called package.json, after read that npm will read the package-lock.json if exists, and then it's will download all required packages (and its dependencies) as tgz packages and finally uncompress all those into node_modules/. node_modules is a directory used as a cache memory shared by the whole package. </p>
+<p>This is when the phenomenon called “dependency resolution” takes place, which is the automatic identification of each required resource, its provider and its version, in order to achieve a non-corrupt installation for the whole environment where the main package (working project) is going to be executed (and remember that the dependencies of a package have a whole chain of necessary sub-dependencies, it's really a miracle that we still exist, isn't it).
+There are also nested dependency trees, created by npm to solve the construction of two or more dependencies that use different versions of the same dependency.
+Once the complete dependency tree of the main package is installed, the npm hoisting algorithm is run, which selects which particular version or package to use at runtime in case a dependency is used in the dependency tree by more than one importer having multiple versions of the same dependency, this is for performance sake.</p>
+<h4 id="the-current-package-management-security-controls-that-might-already-mitigate-these-risks">The current package management security controls that might already mitigate these risks</h4>
+<p>Into NPM there already are some security controls:</p>
+<ol>
+<li>
+<p>NPM audit:
+Npm can detect known dependencies vulnerabilities, but it requires those has been reported before. No completely useful here.</p>
+</li>
+<li>
+<p>Using scopes:
+If you're using well defined scope-limited packages you can reduce collision risk or generic names.</p>
+</li>
+<li>
+<p>Account verification:
+Maintainers has to have 2FA for publish packages, and NPM is showing if a package has an actived 2FA or not. </p>
+</li>
+</ol>
+<p>For us, Node Developers, there are some common practices helping to reduce these risks:</p>
+<ol>
+<li>
+<p>Locking specify version of dependencies:
+If joined with a careful revision of each dependency update into the project (including a node_modules revision), then you can know what dependencies are you using and check their reliability.</p>
+</li>
+<li>
+<p>Dependency Analysis tools (for SCA and other techniques)
+For CICD, or just a well configured development environment, there are code auditoring tools for detect no reported vulnerabilities, npm has no such mechanism by itself.</p>
+</li>
+<li>
+<p>Blocking unreliable packages in CICD
+Configurating policies, commonly using npmrc, for ensure packages integrity using some hash mark, check package popularity, ensure that package's repository has active maintenance... and so.</p>
+</li>
+</ol>
+<h4 id="the-proposed-mitigation-solution-just-thinking-on-it">The proposed mitigation solution, just thinking on it!</h4>
+<p>My proposal, a mitigation proposal for when the hallucinated package is already in the development environment but has not yet been installed, is to define reliability criteria, and force the developer to audit the package that the system determines to be suspicious based on those criteria so that the developer can decide whether or not to install the new suspicious dependencies.</p>
+<p>This is a banality, but a useful one as it allows to exploit AI and keep the most useful of the human as a developer.</p>
+<p>An example: If you had a continuous integration and delivery flow with a highly modularized and decoupled system, and you wanted to accelerate the speed of development with an automatic scheduling and integration agent, you could sandbox the module in which this agent works into an environment that emulates the target production environment, use the minimal permissions to access external resources that allow you to deliver to the user a usable iteration from their point of view but constrained from the back end, and send directly the integration of new deliveries to that environment where after running (long enough) it can be freed from that box of constraints to simply serve in production. For this you should set up feature flagging that allows you to also do incremental delivery. Using the tool I proppose, you could be informed by notifications that your code had malicious (or suspicious) packages and since you are in sandbox you could quarantine them or kill the test environment, just to review it later.</p>
+<h4 id="the-workflow-impact-of-the-proposed-mitigation-solution">The workflow impact of the proposed mitigation solution</h4>
+<p>The best impact would be greater reliability when using AI assistants for coding, knowing that you won’t need to audit all the code the model provides, as you’ll focus only on what appears suspicious.</p>
+<p>The worst impact would be dependency conflicts arising from a quarantine system. New packages are generated every day by building on top of previous ones in the centralized NPM repository, so this proposal MUST be implemented retroactively. What should be done about malicious packages that are already part of the dependency chains of the tools we use?</p>
+<p>Without a deep reflection, I can also mention that adding another step to an integration flow (as I’m proposing) could lengthen release times.
+I might also think this solution could clash with the promise of trends like vibe-coding due to the constant auditing I’m suggesting.</p>
+<h2 id="ending-ideas-on-proposal">Ending ideas on proposal</h2>
+<p>For me, you are only productive using LLM when what you invest in auditing the result is less than what you invest in developing the code without LLM. Today AI is a toolbox that we have to know and sometimes know how to use well. Failure to do so limits our development opportunities and reduces the chances of product success. With patience, attention and the love that we #geeks always have for these things, we move forward steadily.</p>
+<p>In the tool I'm thinking here, there are several missing points. What about false positives? What to do when you realise about a malicious package? How large should a project be to avoid creating a bottleneck in human validation?</p>
+<p>I'd love to hear critiques and counterproposals. In the coming days, if this article receives feedback, I'll implement an open-source PoC.</p>
+<h2 id="contact">Contact</h2>
+<p>You can send me an email to: jose.s.contacto@gmail.com
+Also you can send me a WhatsApp to: +54 9 11 2401-0760</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/jose-pepe/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:jose.s.contacto@gmail.com" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.footer"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+    
+  </body>
+</html>
